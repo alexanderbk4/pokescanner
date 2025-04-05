@@ -12,7 +12,11 @@ function App() {
     fetch('http://localhost:8003/sets/')
       .then(response => response.json())
       .then(data => {
-        setSets(data);
+        // Sort sets by release date
+        const sortedSets = data.sort((a, b) => 
+          new Date(a.release_date) - new Date(b.release_date)
+        );
+        setSets(sortedSets);
         setLoading(false);
       })
       .catch(error => {
@@ -25,10 +29,17 @@ function App() {
     // Fetch cards when selectedSet changes
     if (selectedSet) {
       setLoading(true);
-      fetch(`http://localhost:8003/cards/?set_name=${selectedSet}`)
+      fetch(`http://localhost:8003/cards/set/${selectedSet}`)
         .then(response => response.json())
         .then(data => {
-          setCards(data);
+          // Sort cards by card number
+          const sortedCards = data.sort((a, b) => {
+            // Extract numbers from card numbers (e.g., "1/102" -> 1)
+            const numA = parseInt(a.card_number.split('/')[0]);
+            const numB = parseInt(b.card_number.split('/')[0]);
+            return numA - numB;
+          });
+          setCards(sortedCards);
           setLoading(false);
         })
         .catch(error => {
@@ -56,7 +67,7 @@ function App() {
           >
             {sets.map(set => (
               <option key={set.id} value={set.code}>
-                {set.name}
+                {set.name} ({set.release_date.split('-')[0]})
               </option>
             ))}
           </select>
