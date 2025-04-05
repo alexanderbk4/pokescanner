@@ -40,9 +40,10 @@ def test_find_base_set():
             return False
         
         print(f"✅ Successfully retrieved {len(cards['data'])} cards from the base set")
-        print("\nFirst few cards:")
-        for card in cards['data'][:5]:
-            print(f"- {card['name']} ({card['number']}/{base_set['total']})")
+        print("\nAll cards in the base set:")
+        for card in sorted(cards['data'], key=lambda x: int(x['number'])):
+            rarity = card.get('rarity', 'N/A')
+            print(f"{card['number']}/102: {card['name']} ({rarity})")
         
         return True
         
