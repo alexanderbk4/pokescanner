@@ -6,51 +6,52 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class PokemonTCGClient:
+    """Client for interacting with the Pokemon TCG API."""
+    
     BASE_URL = "https://api.pokemontcg.io/v2"
     
-    def __init__(self):
-        self.api_key = os.getenv("POKEMON_TCG_API_KEY")
+    def __init__(self, api_key: str):
+        """Initialize the client with an API key."""
+        self.api_key = api_key
         self.headers = {
-            "X-Api-Key": self.api_key
-        } if self.api_key else {}
-
+            "X-Api-Key": api_key,
+            "Content-Type": "application/json"
+        }
+    
     def _make_request(self, endpoint: str, params: Optional[Dict] = None) -> Dict:
-        """Make a request to the Pokémon TCG API."""
+        """Make a request to the Pokemon TCG API."""
         url = f"{self.BASE_URL}/{endpoint}"
         response = requests.get(url, headers=self.headers, params=params)
         response.raise_for_status()
         return response.json()
-
-    def get_cards(self, 
-                 page: int = 1, 
-                 page_size: int = 250,
-                 query: Optional[str] = None) -> Dict:
-        """Get cards with optional search query."""
+    
+    def get_cards(self, limit: int = 250, page: int = 1, set_id: Optional[str] = None) -> Dict:
+        """Get cards from the API with optional filtering."""
         params = {
             "page": page,
-            "pageSize": page_size
+            "pageSize": limit
         }
-        if query:
-            params["q"] = query
+        
+        if set_id:
+            params["q"] = f"set.id:{set_id}"
+            
         return self._make_request("cards", params)
-
-    def get_sets(self, 
-                page: int = 1, 
-                page_size: int = 250) -> Dict:
-        """Get all card sets."""
+    
+    def get_sets(self, limit: int = 250, page: int = 1) -> Dict:
+        """Get card sets from the API."""
         params = {
             "page": page,
-            "pageSize": page_size
+            "pageSize": limit
         }
         return self._make_request("sets", params)
+    
+    def get_set_by_id(self, set_id: str) -> Dict:
+        """Get a specific card set by its ID."""
+        return self._make_request(f"sets/{set_id}")
 
     def get_card_by_id(self, card_id: str) -> Dict:
         """Get a specific card by its ID."""
         return self._make_request(f"cards/{card_id}")
-
-    def get_set_by_id(self, set_id: str) -> Dict:
-        """Get a specific set by its ID."""
-        return self._make_request(f"sets/{set_id}")
 
     def search_cards(self, 
                     name: Optional[str] = None,
