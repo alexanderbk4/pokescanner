@@ -1,13 +1,18 @@
 from typing import Dict, List
 from sqlalchemy.orm import Session
 from .pokemon_tcg_client import PokemonTCGClient
-from ..models import Card, CardSet, PriceHistory
+from ..models import Card, CardSet
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class CardSyncService:
     def __init__(self, db: Session):
         self.db = db
-        self.tcg_client = PokemonTCGClient()
+        api_key = os.getenv("POKEMON_TCG_API_KEY", "")
+        self.tcg_client = PokemonTCGClient(api_key)
 
     def sync_sets(self) -> None:
         """Sync all card sets from the Pokémon TCG API."""
@@ -20,10 +25,21 @@ class CardSyncService:
                 break
 
             for set_data in sets_data:
+                # Try different date formats
+                release_date = None
+                if set_data.get("releaseDate"):
+                    date_formats = ["%Y-%m-%d", "%Y/%m/%d"]
+                    for date_format in date_formats:
+                        try:
+                            release_date = datetime.strptime(set_data["releaseDate"], date_format).date()
+                            break
+                        except ValueError:
+                            continue
+
                 card_set = CardSet(
                     name=set_data["name"],
                     code=set_data["id"],
-                    release_date=datetime.strptime(set_data["releaseDate"], "%Y-%m-%d").date() if set_data.get("releaseDate") else None,
+                    release_date=release_date,
                     total_cards=set_data.get("total")
                 )
                 
@@ -45,8 +61,7 @@ class CardSyncService:
         """Sync cards from the Pokémon TCG API."""
         page = 1
         while True:
-            query = f"set.id:{set_code}" if set_code else None
-            response = self.tcg_client.get_cards(page=page, query=query)
+            response = self.tcg_client.get_cards(page=page, set_id=set_code)
             cards_data = response.get("data", [])
             
             if not cards_data:
@@ -63,18 +78,18 @@ class CardSyncService:
 
                 # Create or update card
                 card = Card(
-                    name=card_data["name"],
-                    set_name=card_data["set"]["name"],
+                    name=card_data.get("name", "Unknown"),
+                    set_name=card_data["set"].get("name", "Unknown"),
                     set_code=set_code,
-                    card_number=card_data["number"],
-                    rarity=card_data["rarity"],
-                    image_url=card_data["images"]["large"] if "images" in card_data else None
+                    card_number=card_data.get("number", "0"),
+                    rarity=card_data.get("rarity", "Unknown"),
+                    image_url=card_data.get("images", {}).get("large")
                 )
 
                 # Check if card exists
                 existing_card = self.db.query(Card).filter(
                     Card.set_code == set_code,
-                    Card.card_number == card_data["number"]
+                    Card.card_number == card_data.get("number", "0")
                 ).first()
 
                 if existing_card:
@@ -85,19 +100,6 @@ class CardSyncService:
                 else:
                     # Add new card
                     self.db.add(card)
-
-                # Add price history if available
-                if "tcgplayer" in card_data and "prices" in card_data["tcgplayer"]:
-                    prices = card_data["tcgplayer"]["prices"]
-                    card_id = existing_card.id if existing_card else card.id
-                    
-                    price_history = PriceHistory(
-                        card_id=card_id,
-                        low_price=prices.get("normal", {}).get("low"),
-                        mid_price=prices.get("normal", {}).get("mid"),
-                        high_price=prices.get("normal", {}).get("high")
-                    )
-                    self.db.add(price_history)
             
             self.db.commit()
             page += 1
