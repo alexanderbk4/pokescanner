@@ -1,6 +1,6 @@
 # Pokémon Card Scanner
 
-An Android application that uses augmented reality to scan Pokémon cards and display real-time price information.
+A web application for browsing and managing Pokémon card collections.
 
 ## Features
 
@@ -12,16 +12,9 @@ An Android application that uses augmented reality to scan Pokémon cards and di
 
 ## Tech Stack
 
-### Frontend
-- React
-- JavaScript
-- Tailwind CSS
-- Android Native Components
-
-### Backend
-- FastAPI (Python)
-- MySQL
-- Cloud Storage
+- **Frontend**: React, JavaScript, Tailwind CSS
+- **Backend**: Python, FastAPI
+- **Database**: MySQL
 
 ## Project Structure
 
@@ -43,40 +36,97 @@ pokemon-scanner/
 ### Backend Setup
 
 1. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
 2. Install dependencies:
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
 3. Set up environment variables:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
+```bash
+cp .env.example .env
+# Edit .env with your database credentials and desired port
+```
 
-4. Run the development server:
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+4. Initialize the database:
+```bash
+python scripts/populate_db.py
+```
+
+5. Start the backend server:
+```bash
+uvicorn app.main:app --reload --port 8000  # or your preferred port
+```
 
 ### Frontend Setup
 
 1. Install dependencies:
-   ```bash
-   cd frontend
-   npm install
-   ```
+```bash
+cd frontend
+npm install
+```
 
-2. Start the development server:
-   ```bash
-   npm start
-   ```
+2. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your backend API URL and desired port
+```
+
+3. Start the development server:
+```bash
+npm start
+```
+
+## Commit History
+
+1. Initial project setup
+   - Created basic project structure
+   - Set up FastAPI backend
+   - Created database models for cards and sets
+
+2. Database Implementation
+   - Implemented SQLAlchemy models
+   - Created database initialization script
+   - Added sample data population
+
+3. API Development
+   - Created CRUD endpoints for cards and sets
+   - Implemented CORS middleware
+   - Added error handling
+
+4. Frontend Setup
+   - Created React application structure
+   - Set up routing with React Router
+   - Implemented Tailwind CSS
+
+5. Frontend Components
+   - Created SetList and CardList components
+   - Implemented API integration
+   - Added loading and error states
+
+6. Configuration Updates
+   - Made ports configurable via environment variables
+   - Updated API URL configuration
+   - Added environment variable support
+
+## Environment Variables
+
+### Backend (.env)
+```
+DATABASE_URL=mysql://user:password@localhost/pokemon_cards
+API_URL=http://localhost:8000
+```
+
+### Frontend (.env)
+```
+REACT_APP_API_URL=http://localhost:8000
+REACT_APP_PORT=3000
+```
 
 ## Development Guidelines
 
