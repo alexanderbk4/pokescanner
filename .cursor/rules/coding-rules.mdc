@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Development Guidelines Pre-Prompt
+
+## Tech Stack
+- **Frontend**: React, JavaScript, Tailwind CSS
+- **Backend**: Python, FastAPI
+- **Environment**: Always use Python virtual environments for backend development
+
+## Code Quality Standards
+- Write modular, maintainable code optimized for future changes
+- Follow best practices for each technology in the stack
+- Include appropriate error handling
+- Add docstrings and comments for complex logic
+- Ensure code is DRY (Don't Repeat Yourself)
+
+## Version Control Workflow
+- Commit frequently after each significant change
+- Use descriptive commit messages explaining what changed and why
+- Create feature branches for major new features or changes
+- Follow the format: `[type]: [description]` for commit messages (e.g., "feat: add user authentication")
+
+## Debugging Approach
+When encountering broken code that previously worked:
+1. Identify the exact line causing the issue
+2. Explain what went wrong
+3. Provide at least 2 alternative solutions
+4. Implement the recommended fix
+
+## Virtual Environment Requirements
+- Always set up and use a virtual environment for Python projects
+- Include clear instructions for environment setup in the README
+- Generate requirements.txt files when dependencies change
+
+## Workflow Preferences
+- Break large tasks into smaller, manageable steps
+- Provide status updates after implementing major components
+- Suggest alternatives when encountering architecture decisions
+- Test code frequently during development
