@@ -1,20 +1,31 @@
 # Pokémon Card Scanner
 
-A web application for browsing and managing Pokémon card collections.
+A comprehensive web application for browsing, tracking, and managing Pokémon Trading Card Game (TCG) collections. The application provides a rich interface for viewing card details, tracking prices, and managing collections.
 
 ## Features
 
-- Real-time card scanning using phone camera
-- Augmented reality price overlay
-- Card browsing interface
-- Price tracking and history
-- Integration with PriceCharting API
+- **Card Browsing Interface**
+  - Browse cards from all Pokémon TCG sets
+  - Filter and search cards by set, rarity, and name
+  - View high-resolution card images
+  - Detailed card information including set details and rarity
+
+- **Price Tracking**
+  - Historical price data for cards
+  - Price trends and market analysis
+  - Integration with Pokémon TCG API for real-time data
+
+- **Collection Management**
+  - Track your personal card collection
+  - Organize cards by set and condition
+  - Calculate collection value
 
 ## Tech Stack
 
 - **Frontend**: React, JavaScript, Tailwind CSS
 - **Backend**: Python, FastAPI
 - **Database**: MySQL
+- **APIs**: Pokémon TCG API
 
 ## Project Structure
 
@@ -22,10 +33,17 @@ A web application for browsing and managing Pokémon card collections.
 pokemon-scanner/
 ├── backend/           # FastAPI backend
 │   ├── app/          # Application code
+│   │   ├── models/   # Database models
+│   │   ├── services/ # Business logic
+│   │   └── schemas/  # Pydantic models
+│   ├── scripts/      # Utility scripts
 │   ├── tests/        # Backend tests
 │   └── requirements.txt
 ├── frontend/         # React frontend
 │   ├── src/         # Source code
+│   │   ├── components/ # React components
+│   │   ├── pages/     # Page components
+│   │   └── services/  # API services
 │   ├── public/      # Static files
 │   └── package.json
 └── README.md
@@ -50,17 +68,18 @@ pip install -r requirements.txt
 3. Set up environment variables:
 ```bash
 cp .env.example .env
-# Edit .env with your database credentials and desired port
+# Edit .env with your database credentials and Pokémon TCG API key
 ```
 
 4. Initialize the database:
 ```bash
-python scripts/populate_db.py
+# Sync all card sets and their cards
+python scripts/sync_all_sets.py
 ```
 
 5. Start the backend server:
 ```bash
-uvicorn app.main:app --reload --port 8000  # or your preferred port
+uvicorn app.main:app --reload --port 8003
 ```
 
 ### Frontend Setup
@@ -74,7 +93,7 @@ npm install
 2. Set up environment variables:
 ```bash
 cp .env.example .env
-# Edit .env with your backend API URL and desired port
+# Edit .env with your backend API URL
 ```
 
 3. Start the development server:
@@ -82,70 +101,44 @@ cp .env.example .env
 npm start
 ```
 
-## Commit History
+## Current Status
 
-1. Initial project setup
-   - Created basic project structure
-   - Set up FastAPI backend
-   - Created database models for cards and sets
+The application currently provides:
+- Complete card database with all Pokémon TCG sets
+- Card browsing interface with filtering capabilities
+- High-resolution card images
+- Set-based organization
 
-2. Database Implementation
-   - Implemented SQLAlchemy models
-   - Created database initialization script
-   - Added sample data population
+Planned features not yet implemented:
+- Price tracking and historical data
+- Collection management
+- User authentication
 
-3. API Development
-   - Created CRUD endpoints for cards and sets
-   - Implemented CORS middleware
-   - Added error handling
+## Future Goals
 
-4. Frontend Setup
-   - Created React application structure
-   - Set up routing with React Router
-   - Implemented Tailwind CSS
+1. **Enhanced Collection Management**
+   - User authentication and personal collections
+   - Card condition tracking
+   - Collection value calculation
 
-5. Frontend Components
-   - Created SetList and CardList components
-   - Implemented API integration
-   - Added loading and error states
+2. **Advanced Price Tracking**
+   - Real-time price updates
+   - Price history visualization
+   - Market trend analysis
 
-6. Configuration Updates
-   - Made ports configurable via environment variables
-   - Updated API URL configuration
-   - Added environment variable support
+3. **Mobile Integration**
+   - Mobile-friendly interface
+   - Card scanning capabilities
+   - Augmented reality features
 
-## Environment Variables
-
-### Backend (.env)
-```
-DATABASE_URL=mysql://user:password@localhost/pokemon_cards
-API_URL=http://localhost:8000
-```
-
-### Frontend (.env)
-```
-REACT_APP_API_URL=http://localhost:8000
-REACT_APP_PORT=3000
-```
-
-## Development Guidelines
-
-- Follow the coding standards outlined in the project documentation
-- Write tests for new features
-- Use feature branches for development
-- Keep the documentation up to date
-
-## API Documentation
-
-The backend API documentation is available at `/docs` when running the development server.
+4. **Social Features**
+   - Collection sharing
+   - Trading platform
+   - Community marketplace
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
