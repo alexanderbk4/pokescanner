@@ -1,24 +1,49 @@
 # Pokémon Card Scanner
 
-A comprehensive web application for browsing, tracking, and managing Pokémon Trading Card Game (TCG) collections. The application provides a rich interface for viewing card details, tracking prices, and managing collections.
+A web and mobile application that allows users to scan Pokémon Trading Card Game (TCG) cards using their phone's camera to instantly view current market prices. The application currently provides a comprehensive card browsing interface, with the ultimate goal of becoming a real-time card scanning and pricing tool.
 
-## Features
+## Current Features
 
-- **Card Browsing Interface**
-  - Browse cards from all Pokémon TCG sets
-  - Filter and search cards by set, rarity, and name
+- **Card Database & Browsing**
+  - Complete database of all Pokémon TCG sets
+  - Browse and filter cards by set, rarity, and name
   - View high-resolution card images
   - Detailed card information including set details and rarity
 
-- **Price Tracking**
-  - Historical price data for cards
-  - Price trends and market analysis
-  - Integration with Pokémon TCG API for real-time data
+## Primary Goal
 
-- **Collection Management**
-  - Track your personal card collection
-  - Organize cards by set and condition
-  - Calculate collection value
+The main objective of this project is to create a real-time card scanning application that:
+- Uses phone camera to instantly identify Pokémon cards
+- Overlays current market prices directly on the card image
+- Provides price ranges based on card condition (Near Mint, Lightly Played, etc.)
+- Updates prices in real-time from market data
+- Works offline for previously scanned cards
+
+## Future Features
+
+1. **Real-time Card Scanning**
+   - Camera-based card recognition
+   - Augmented reality price overlay
+   - Offline card database for quick identification
+   - Multiple card scanning in one frame
+
+2. **Advanced Price Tracking**
+   - Real-time price updates from multiple sources
+   - Price history visualization
+   - Condition-based pricing
+   - Market trend analysis
+
+3. **Collection Management**
+   - User authentication and personal collections
+   - Card condition tracking
+   - Collection value calculation
+   - Export/import collection data
+
+4. **Social Features**
+   - Collection sharing
+   - Trading platform
+   - Community marketplace
+   - Price alert notifications
 
 ## Tech Stack
 
@@ -26,6 +51,8 @@ A comprehensive web application for browsing, tracking, and managing Pokémon Tr
 - **Backend**: Python, FastAPI
 - **Database**: MySQL
 - **APIs**: Pokémon TCG API
+- **Mobile**: React Native (planned)
+- **Computer Vision**: TensorFlow, OpenCV (planned)
 
 ## Project Structure
 
@@ -101,40 +128,32 @@ cp .env.example .env
 npm start
 ```
 
-## Current Status
+## Development Roadmap
 
-The application currently provides:
-- Complete card database with all Pokémon TCG sets
-- Card browsing interface with filtering capabilities
-- High-resolution card images
-- Set-based organization
+1. **Phase 1: Card Database & Browsing** (Current)
+   - Complete card database implementation ✓
+   - Basic browsing interface ✓
+   - Set-based organization ✓
 
-Planned features not yet implemented:
-- Price tracking and historical data
-- Collection management
-- User authentication
-
-## Future Goals
-
-1. **Enhanced Collection Management**
-   - User authentication and personal collections
-   - Card condition tracking
-   - Collection value calculation
-
-2. **Advanced Price Tracking**
+2. **Phase 2: Price Integration**
+   - Price data collection system
    - Real-time price updates
-   - Price history visualization
-   - Market trend analysis
+   - Condition-based pricing
 
-3. **Mobile Integration**
-   - Mobile-friendly interface
-   - Card scanning capabilities
-   - Augmented reality features
+3. **Phase 3: Mobile Development**
+   - React Native app development
+   - Camera integration
+   - Offline card database
 
-4. **Social Features**
-   - Collection sharing
-   - Trading platform
-   - Community marketplace
+4. **Phase 4: Computer Vision**
+   - Card recognition model training
+   - Real-time scanning implementation
+   - AR price overlay
+
+5. **Phase 5: Advanced Features**
+   - Collection management
+   - Social features
+   - Market analysis tools
 
 ## Contributing
 
